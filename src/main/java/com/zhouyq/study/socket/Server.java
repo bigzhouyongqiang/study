@@ -1,9 +1,7 @@
 package com.zhouyq.study.socket;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import com.zhouyq.study.socket.impl.Service;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -18,28 +16,11 @@ public class Server {
 
         ServerSocket serverSocket = new ServerSocket(9999);
 
-        Socket socket = serverSocket.accept();
-
-        // 从控制台读取数据
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-
-        // 给客户端回写数据
-        PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-
-        // 从客户端读取数据
-        BufferedReader is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-        String readline = is.readLine();
-        while(!"bye".equals(readline) && null != readline) {
-            System.out.println("Client: "+ readline);
-            String outStr = in.readLine();
-            out.println(outStr);
-            out.flush();
-            readline = is.readLine();
+        while (true) {
+            Socket socket = serverSocket.accept();
+            System.out.println("监听到客户端连接到本机, IP： "+socket.getRemoteSocketAddress() + "\t端口："+socket.getPort());
+            new Thread(new Service(socket)).start();
         }
-        in.close();
-        out.close();
-        is.close();
 
     }
 

@@ -11,7 +11,7 @@ import java.net.Socket;
  * @Date 2020/4/10 20:54
  * @Author zhouyq
  */
-public class Client1 {
+public class Client {
     public static void main(String[] args) throws Exception{
         Socket socket = new Socket("127.0.0.1",9999);
 
